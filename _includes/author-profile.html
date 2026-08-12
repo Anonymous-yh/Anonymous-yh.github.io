@@ -6,13 +6,15 @@
 {% endif %}
 
 <div itemscope itemtype="http://schema.org/Person">
-  <div class="author__avatar">
-    {% if author.avatar contains "://" %}
-      <img src="{{ author.avatar }}" alt="{{ author.name }}" fetchpriority="high">
-    {% else %}
-      <img src="{{ author.avatar | prepend: '/images/' | prepend: base_path }}" alt="{{ author.name }}" fetchpriority="high">
-    {% endif %}
-  </div>
+  {% if author.avatar %}
+    <div class="author__avatar">
+      {% if author.avatar contains "://" %}
+        <img src="{{ author.avatar }}" alt="{{ author.name }}" fetchpriority="high">
+      {% else %}
+        <img src="{{ author.avatar | prepend: '/images/' | prepend: base_path }}" alt="{{ author.name }}" fetchpriority="high">
+      {% endif %}
+    </div>
+  {% endif %}
   <div class="author__content">
     <h3 class="author__name">{{ author.name }}</h3>
     {% if author.pronouns %}<p class="author__pronouns">{{ author.pronouns }}</p>{% endif %}

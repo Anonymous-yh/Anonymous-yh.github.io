@@ -1,8 +1,8 @@
 ---
+layout: home
 permalink: /
 title: ""
-author_profile: true
-classes: wide home-page
+author_profile: false
 redirect_from:
   - /about/
   - /about.html
@@ -10,59 +10,62 @@ redirect_from:
 
 {% include base_path %}
 
-<section class="home-hero" aria-labelledby="home-title">
-  <div class="home-hero__content">
-    <p class="eyebrow">AI Research · [University / Lab]</p>
-    <h1 id="home-title">Hi, I&rsquo;m [Name].</h1>
-    <p class="home-hero__statement">I explore how multimodal and generative AI systems can reason, create, and collaborate more reliably in the real world.</p>
-    <div class="home-actions">
-      <a class="button-link button-link--primary" href="{{ base_path }}/cv/">View CV</a>
-      <a class="button-link" href="https://github.com/" rel="noopener">GitHub</a>
+<section class="editorial-hero" aria-labelledby="home-title">
+  <div class="editorial-hero__copy">
+    <p class="eyebrow">AI Research <span>·</span> Peking University</p>
+    <h1 id="home-title">Hi, I&rsquo;m<br><em>Yihan Wang.</em><span class="hero-name-cn">汪轶寒</span></h1>
+    <p class="editorial-hero__statement">I explore how foundation models learn, generate, reason, and interact with the world.</p>
+    <p class="editorial-hero__focus">Multimodal LLMs <span>·</span> Diffusion LLMs <span>·</span> Agents <span>·</span> Efficient AI</p>
+    <div class="hero-actions">
+      <a class="button-link button-link--primary" href="#research">Research interests <span>↓</span></a>
+      <a class="button-link" href="{{ base_path }}/cv/">CV <span>↗</span></a>
+    </div>
+    <div class="hero-socials" aria-label="Social links">
+      <a href="https://github.com/Anonymous-yh" rel="noopener">GitHub</a><a href="mailto:pkuwyh0131@gmail.com">Email</a>
     </div>
   </div>
-</section>
-
-<section class="home-section" aria-labelledby="about-heading">
-  <div class="home-section__heading"><h2 id="about-heading">About</h2><span class="section-kicker">01 / INTRO</span></div>
-  <p>I am an AI researcher interested in capable, efficient, and human-centered learning systems. This space is intentionally a placeholder for a concise introduction, current role, and research perspective.</p>
-</section>
-
-<section class="home-section" id="research" aria-labelledby="research-heading">
-  <div class="home-section__heading"><h2 id="research-heading">Research Interests</h2><span class="section-kicker">02 / FOCUS</span></div>
-  <div class="interest-tags">
-    <span class="interest-tag">Multimodal LLMs</span><span class="interest-tag">Diffusion LLMs</span><span class="interest-tag">Multimodal Generation</span><span class="interest-tag">LLM Agents</span><span class="interest-tag">Efficient Training &amp; Inference</span>
+  <div class="editorial-hero__portrait editorial-hero__portrait--placeholder" aria-label="Profile photo will be added soon">
+    <div class="portrait-grid" aria-hidden="true"></div>
+    <div class="portrait-placeholder" aria-hidden="true"><span>YW</span></div>
+    <span class="portrait-label">PHOTO / TO BE ADDED</span>
   </div>
 </section>
 
-<section class="home-section" aria-labelledby="selected-heading">
-  <div class="home-section__heading"><h2 id="selected-heading">Selected Research</h2><a class="text-link" href="{{ base_path }}/publications/">All publications →</a></div>
-  <div class="research-list">
-    <article class="research-item">
-      <div class="research-item__teaser">RESEARCH / 01</div>
-      <div><div class="research-item__meta">Venue / Status · Year</div><h3>Research title placeholder</h3><p>A short, precise description of the research question, method, and contribution will live here.</p><div class="item-links"><a href="#">Paper</a> · <a href="#">Code</a> · <a href="#">Project</a></div></div>
-    </article>
-    <article class="research-item">
-      <div class="research-item__teaser">RESEARCH / 02</div>
-      <div><div class="research-item__meta">Venue / Status · Year</div><h3>Another research direction</h3><p>Use this row for work in progress, a system, or a project with a lightweight teaser image later.</p><div class="item-links"><a href="#">Paper</a> · <a href="#">Code</a></div></div>
-    </article>
+<section class="interest-strip" id="research" aria-labelledby="interests-heading">
+  <p id="interests-heading" class="section-number">00 / RESEARCH INTERESTS</p>
+  <div class="interest-strip__items"><span>Multimodal LLMs</span><span>Diffusion LLMs</span><span>Generative Models</span><span>AI Agents</span><span>Efficient Inference</span></div>
+</section>
+
+<section class="editorial-section about-section" aria-labelledby="about-heading">
+  <div class="section-heading"><p class="section-number">01 / ABOUT</p><h2 id="about-heading">Building toward capable AI.</h2></div>
+  <div class="about-grid">
+    <p class="about-grid__lead">I am an undergraduate student majoring in Intelligence Science and Technology at Peking University, and will join the School of Intelligence at Peking University as a Ph.D. student in Fall 2027.</p>
+    <div><p>My interests lie broadly in foundation models, particularly multimodal large language models, diffusion language models, multimodal generation and understanding, intelligent agents, and efficient model training and inference.</p><a class="text-link" href="{{ base_path }}/cv/">More about my background →</a></div>
   </div>
 </section>
 
-<section class="home-section" aria-labelledby="posts-heading">
-  <div class="home-section__heading"><h2 id="posts-heading">Latest Posts</h2><a class="text-link" href="{{ base_path }}/blog/">View all posts →</a></div>
-  <div class="latest-posts">
+<section class="editorial-section news-section" aria-labelledby="news-heading">
+  <div class="section-heading"><p class="section-number">02 / NEWS</p><h2 id="news-heading">What&rsquo;s happening.</h2></div>
+  <div class="news-list">
+    <div class="news-item"><time>2027.09</time><p>Will join the School of Intelligence, Peking University as a Ph.D. student.</p></div>
+    <div class="news-item"><time>2026.08</time><p>Exploring few-step generation and step distillation for diffusion language models.</p></div>
+    <div class="news-item"><time>2026.07</time><p>Studying efficient inference and acceleration methods for diffusion language models.</p></div>
+  </div>
+</section>
+
+<section class="editorial-section writing-section" aria-labelledby="writing-heading">
+  <div class="section-heading section-heading--spread"><div><p class="section-number">03 / WRITING</p><h2 id="writing-heading">Notes in progress.</h2></div><a class="text-link" href="{{ base_path }}/blog/">View all writing →</a></div>
+  <p class="section-intro">Notes on AI research, engineering, and things I find interesting.</p>
+  <div class="writing-list">
     {% for post in site.posts limit:3 %}
       {% assign category = post.categories | first | default: "research" %}
-      <article class="home-post">
-        <div class="post-meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time> · <span class="post-category">{{ category }}</span> · {% include read-time.html %}</div>
-        <h3><a href="{{ base_path }}{{ post.url }}">{{ post.title }}</a></h3>
-        {% if post.excerpt %}<p>{{ post.excerpt | markdownify | strip_html | truncate: 180 }}</p>{% endif %}
-      </article>
+      {% case category %}{% when "research" %}{% assign category_label = "Research Notes" %}{% when "modding" %}{% assign category_label = "Game Modding" %}{% else %}{% assign category_label = category | capitalize %}{% endcase %}
+      <article class="writing-entry"><div class="writing-entry__meta"><span>{{ category_label }}</span><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time></div><div><h3><a href="{{ base_path }}{{ post.url }}">{{ post.title }}</a></h3>{% if post.excerpt %}<p>{{ post.excerpt | markdownify | strip_html | truncate: 160 }}</p>{% endif %}</div><div class="writing-entry__read">{% include read-time.html %}<a href="{{ base_path }}{{ post.url }}">Read →</a></div></article>
     {% endfor %}
+    {% if site.posts.size == 0 %}
+      <p class="empty-state">Writing is coming soon. I plan to share research notes, engineering experiments, and game-modding explorations here.</p>
+    {% endif %}
   </div>
 </section>
 
-<section class="home-section two-column-note" aria-label="News and beyond research">
-  <div><div class="home-section__heading"><h2>News</h2><span class="section-kicker">03 / NOW</span></div><p>Short updates, talks, releases, and milestones can be placed here without turning the page into a feed.</p></div>
-  <div><div class="home-section__heading"><h2>Beyond Research</h2><span class="section-kicker">04 / OFFLINE</span></div><p>A small place for the interests and side projects that add a human dimension to the work.</p></div>
-</section>
+<section class="beyond-section" aria-labelledby="beyond-heading"><p class="section-number">04 / BEYOND RESEARCH</p><h2 id="beyond-heading">Curiosity extends beyond the lab.</h2><p>Outside research, I enjoy game modding, games, and exploring how interactive systems are built.</p></section>
