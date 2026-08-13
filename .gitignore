@@ -4,6 +4,8 @@ _site/
 .sass-cache/
 .bundle/
 vendor/
+!_sass/bootstrap/vendor/
+!_sass/bootstrap/vendor/_rfs.scss
 .DS_Store
 Gemfile.lock
 package-lock.json
