@@ -1,0 +1,20 @@
+# Blog taxonomy. Use the `slug` value in a post's `categories` front matter.
+- slug: paper-reading
+  title: Paper Reading
+  icon: "📖"
+  description: Notes, questions, and takeaways from papers.
+
+- slug: course-notes
+  title: Course Notes
+  icon: "📝"
+  description: Structured notes from courses and self-study.
+
+- slug: engineering
+  title: Engineering
+  icon: "⚙️"
+  description: Implementation notes, tooling, and systems work.
+
+- slug: personal
+  title: Personal
+  icon: "🌿"
+  description: Travel, games, and occasional reflections.

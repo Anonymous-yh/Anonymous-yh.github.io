@@ -1,37 +1,23 @@
 ---
-layout: archive
 title: "CV"
+layout: gridlay
+sitemap: false
 permalink: /cv/
-author_profile: true
-redirect_from:
-  - /resume
 ---
 
-{% include base_path %}
+## 📄 Curriculum Vitae
 
-<p class="page__lead">Undergraduate Student at Peking University · Incoming Ph.D. Student</p>
+<div class="section-card">
+  <h3>Yihan Wang / 汪轶寒</h3>
+  <p>Undergraduate Student @ Peking University<br>Incoming Ph.D. Student, School of Intelligence, Peking University</p>
+  <p><a href="mailto:pkuwyh0131@gmail.com">pkuwyh0131@gmail.com</a> · <a href="https://github.com/Anonymous-yh">GitHub</a></p>
+</div>
 
-Education
-======
+### 🎓 Education
 
-**Peking University**<br>
-B.S. in Intelligence Science and Technology<br>
-Sep. 2023 – Jun. 2027 (expected)
+- **Peking University**, B.S. in Intelligence Science and Technology, 2023 – 2027
+- **School of Intelligence, Peking University**, Incoming Ph.D. Student, 2027 –
 
-**School of Intelligence, Peking University**<br>
-Incoming Ph.D. Student<br>
-Sep. 2027 –
+### 🔭 Research interests
 
-Research Interests
-======
-
-Multimodal large language models, diffusion large language models, multimodal generation and understanding, intelligent agents, and efficient training and inference.
-
-Contact
-======
-
-- Email: [pkuwyh0131@gmail.com](mailto:pkuwyh0131@gmail.com)
-- GitHub: [Anonymous-yh](https://github.com/Anonymous-yh)
-- Location: Beijing, China
-
-<p class="small">A PDF version will be available at <code>/files/cv.pdf</code> once uploaded.</p>
+Multimodal large language models, diffusion large language models, multimodal generation, intelligent agents, and efficient training and inference.

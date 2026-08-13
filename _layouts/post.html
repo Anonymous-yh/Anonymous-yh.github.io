@@ -1,0 +1,35 @@
+---
+layout: default
+---
+
+{% assign primary_category = page.categories | first | default: "personal" %}
+{% assign category_info = site.data.blog_categories | where: "slug", primary_category | first %}
+{% assign reading_time = page.content | number_of_words | divided_by: 220 | plus: 1 %}
+
+<article class="blog-article" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="blog-article__header">
+    <p class="blog-article__meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>
+      <span aria-hidden="true">·</span>
+      <span class="blog-post__category">{% if category_info %}{{ category_info.icon }} {{ category_info.title }}{% else %}{{ primary_category | replace: '-', ' ' }}{% endif %}</span>
+      <span aria-hidden="true">·</span>
+      <span>{{ reading_time }} min read</span>
+    </p>
+    <h1 itemprop="name headline">{{ page.title | escape }}</h1>
+    {% if page.description %}<p class="blog-article__description">{{ page.description }}</p>{% endif %}
+    {% if page.tags and page.tags.size > 0 %}
+      <div class="blog-post__tags" aria-label="Post tags">
+        {% for tag in page.tags %}<span>#{{ tag }}</span>{% endfor %}
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="blog-article__content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  <nav class="blog-article__pagination" aria-label="Post navigation">
+    {% if page.previous %}<a href="{{ page.previous.url | relative_url }}"><span>← Previous</span>{{ page.previous.title }}</a>{% else %}<span></span>{% endif %}
+    {% if page.next %}<a href="{{ page.next.url | relative_url }}" class="blog-article__next"><span>Next →</span>{{ page.next.title }}</a>{% endif %}
+  </nav>
+</article>

@@ -1,0 +1,112 @@
+// =============================================================
+// Card components
+// =============================================================
+
+.card-academic {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-slow), transform var(--transition-slow);
+
+  &:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  h3, h4 {
+    margin-top: 0;
+  }
+}
+
+.section-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-sm);
+
+  h3, h4 {
+    margin-top: 0;
+    &::after {
+      display: none;
+    }
+  }
+}
+
+// About page: a quiet editorial grid for interests outside research.
+.beyond-research {
+  .beyond-research__intro {
+    color: var(--text-secondary);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    margin-bottom: var(--space-8);
+    max-width: 62ch;
+  }
+
+  .beyond-research__grid {
+    border-top: 1px solid var(--border-color);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .beyond-research__item {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    padding: var(--space-6) var(--space-4) var(--space-6) 0;
+
+    &:nth-child(odd) {
+      border-right: 1px solid var(--border-color);
+      padding-right: var(--space-6);
+    }
+
+    &:nth-child(even) {
+      padding-left: var(--space-6);
+    }
+
+    &:nth-child(n + 3) {
+      border-top: 1px solid var(--border-color);
+    }
+
+    h4 {
+      font-size: 1.125rem;
+      margin-bottom: var(--space-2);
+    }
+
+    p {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+  }
+
+  .beyond-research__icon {
+    color: var(--accent);
+    font-size: 0.95rem;
+    padding-top: 0.25rem;
+  }
+
+  @media (max-width: 576px) {
+    .beyond-research__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .beyond-research__item,
+    .beyond-research__item:nth-child(odd),
+    .beyond-research__item:nth-child(even) {
+      border-right: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .beyond-research__item:not(:first-child) {
+      border-top: 1px solid var(--border-color);
+    }
+  }
+}

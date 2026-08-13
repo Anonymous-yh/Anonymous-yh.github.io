@@ -1,6 +1,35 @@
-{% include base_path %}
-<div class="page__footer-copyright">
-  <strong>Yihan Wang</strong><br>
-  <a href="https://github.com/Anonymous-yh">GitHub</a> · <a href="mailto:pkuwyh0131@gmail.com">Email</a><br>
-  © {{ site.time | date: '%Y' }} Yihan Wang · Built with Jekyll · <a href="{{ base_path }}/sitemap/">Sitemap</a>
-</div>
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <h5>About</h5>
+      <p>
+        {{ site.name }}<br>
+        {{ site.title }}<br>
+        {{ site.institution }}
+      </p>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <p>
+        <a href="mailto:{{ site.email }}"><i class="fa-solid fa-envelope"></i> {{ site.email }}</a><br>
+        {% if site.links.github and site.links.github != "" %}<a href="{{ site.links.github }}"><i class="fa-brands fa-github"></i> GitHub</a><br>{% endif %}
+      </p>
+    </div>
+    <div>
+      <h5>Links</h5>
+      <p>
+        {% if site.links.cv and site.links.cv != "" %}<a href="{{ site.url }}{{ site.baseurl }}/{{ site.links.cv }}"><i class="ai ai-cv"></i> CV</a><br>{% endif %}
+        {% if site.links.google_scholar and site.links.google_scholar != "" %}<a href="{{ site.links.google_scholar }}"><i class="ai ai-google-scholar"></i> Google Scholar</a><br>{% endif %}
+        <a href="{{ site.url }}{{ site.baseurl }}/research/"><i class="fa-solid fa-flask"></i> Research</a>
+      </p>
+    </div>
+  </div>
+  <div class="footer-grid">
+    <div class="footer-copyright" style="grid-column: 1 / -1;">
+      &copy; {{ "now" | date: "%Y" }} {{ site.name | escape }}
+    </div>
+  </div>
+</footer>
+
+<script src="{{ "/assets/javascript/bootstrap/bootstrap.bundle.min.js" | relative_url }}"></script>
+<script src="{{ "/assets/js/site.js" | relative_url }}"></script>
