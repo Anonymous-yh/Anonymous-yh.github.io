@@ -6,6 +6,12 @@ layout: default
 {% assign category_info = site.data.blog_categories | where: "slug", primary_category | first %}
 {% assign reading_time = page.content | number_of_words | divided_by: 220 | plus: 1 %}
 
+<div class="blog-article-shell">
+  <aside class="blog-toc" data-blog-toc hidden aria-label="Table of contents">
+    <p class="blog-toc__title">On this page</p>
+    <nav class="blog-toc__nav" aria-label="Article sections"></nav>
+  </aside>
+
 <article class="blog-article" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="blog-article__header">
     <p class="blog-article__meta">
@@ -33,3 +39,4 @@ layout: default
     {% if page.next %}<a href="{{ page.next.url | relative_url }}" class="blog-article__next"><span>Next →</span>{{ page.next.title }}</a>{% endif %}
   </nav>
 </article>
+</div>

@@ -298,4 +298,56 @@
     });
   }
 
+  // ----- Blog Table of Contents -----
+
+  var articleContent = document.querySelector('.blog-article__content');
+  var toc = document.querySelector('[data-blog-toc]');
+
+  if (articleContent && toc) {
+    var tocNav = toc.querySelector('.blog-toc__nav');
+    var headings = Array.prototype.slice.call(articleContent.querySelectorAll('h1, h2, h3, h4'));
+    var headingRanks = [];
+
+    headings.forEach(function (heading) {
+      var rank = Number(heading.tagName.substring(1));
+      if (headingRanks.indexOf(rank) === -1) headingRanks.push(rank);
+    });
+    headingRanks.sort(function (a, b) { return a - b; });
+
+    if (headings.length > 0 && tocNav) {
+      var tocLinks = [];
+
+      headings.forEach(function (heading, index) {
+        if (!heading.id) heading.id = 'section-' + (index + 1);
+
+        var rank = Number(heading.tagName.substring(1));
+        var level = headingRanks.indexOf(rank) + 1;
+        var link = document.createElement('a');
+        link.href = '#' + heading.id;
+        link.className = 'toc-level-' + Math.min(level, 3);
+        link.textContent = heading.textContent.trim();
+        tocNav.appendChild(link);
+        tocLinks.push({ heading: heading, link: link });
+      });
+
+      toc.hidden = false;
+
+      if ('IntersectionObserver' in window) {
+        var activeTocLink = function (id) {
+          tocLinks.forEach(function (item) {
+            item.link.classList.toggle('is-active', item.heading.id === id);
+          });
+        };
+
+        var tocObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) activeTocLink(entry.target.id);
+          });
+        }, { rootMargin: '-18% 0px -72% 0px', threshold: 0 });
+
+        tocLinks.forEach(function (item) { tocObserver.observe(item.heading); });
+      }
+    }
+  }
+
 })();

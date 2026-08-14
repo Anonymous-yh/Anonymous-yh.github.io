@@ -35,6 +35,48 @@
   }
 }
 
+.pub-entry--with-image {
+  display: grid;
+  grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.pub-teaser {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-secondary);
+
+  img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1.72 / 1;
+    object-fit: cover;
+    transition: transform var(--transition-fast);
+  }
+
+  &:hover img {
+    transform: scale(1.015);
+  }
+}
+
+.pub-details {
+  min-width: 0;
+}
+
+@media (max-width: 40rem) {
+  .pub-entry--with-image {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .pub-teaser {
+    max-width: 25rem;
+  }
+}
+
 // Year badge — accent pill floated right
 .year-badge {
   display: inline-block;
