@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Reading Notes: DiffusionGemma Technical Report"
-date: 2026-08-15
+date: 2026-08-13
 categories: [paper-reading]
 tags: [diffusion-llm, paper-reading]
 description: "Notes and questions from reading the DiffusionGemma technical report."
