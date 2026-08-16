@@ -46,7 +46,7 @@ permalink: /blogs/
           <span>{{ reading_time }} min read</span>
         </div>
         <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-        {% if post.excerpt %}<p class="blog-post__excerpt">{{ post.excerpt | markdownify | strip_html | strip_newlines | truncate: 210 }}</p>{% endif %}
+        {% if post.description and post.description != "" %}<p class="blog-post__excerpt">{{ post.description | strip_html | strip_newlines | truncate: 210 }}</p>{% endif %}
         {% if post.tags and post.tags.size > 0 %}
           <div class="blog-post__tags" aria-label="Post tags">
             {% for tag in post.tags limit:4 %}<span>#{{ tag }}</span>{% endfor %}
