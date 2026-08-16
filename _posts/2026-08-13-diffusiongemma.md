@@ -12,7 +12,8 @@ description: "Notes and questions from reading the DiffusionGemma technical repo
 > **Model:** DiffusionGemma-26B-A4B-it  
 > **Base Model:** Gemma 4 26B A4B  
 > **Paradigm:** Discrete Diffusion Language Model / Block-Autoregressive Diffusion  
-> **Release:** 2026
+> **Release:** 2026  
+> **link:** [DiffusionGemma Technical Report](https://arxiv.org/abs/2608.00146)
 
 DiffusionGemma 是 Google DeepMind 发布的开放权重离散扩散语言模型。它是直接从 Gemma 4 26B A4B 的 post-trained checkpoint 出发，通过两阶段训练将一个 autoregressive model 转换成能够进行 bidirectional denoising 的 text diffusion model。论文报告其总参数量约 25.2B，每次实际激活约 3.85B 参数，并使用长度为 256 tokens 的 diffusion canvas。
 
@@ -50,7 +51,9 @@ reference: [A Visual Guide to Diffusiongemma](https://newsletter.maartengrootend
 
 ### Encoder-Decoder
 
-DiffusionGemma 基于 Gemma 4 26B A4B 训练，但由于 Gemma 4 是一个 decoder-only 模型，解决方案是 **Encoder-Denoiser patch**: 让Gemma 4动态切换 denoiser mode 和 encoder mode 实现。在 denoiser mode 下，模型类似于编码器对canvas进行去噪；在 encoder mode 下，模型类似于解码器
+DiffusionGemma 基于 Gemma 4 26B A4B 训练，但由于 Gemma 4 是一个 decoder-only 模型，解决方案是 **Encoder-Denoiser patch**: 让Gemma 4动态切换 denoiser mode 和 encoder mode 实现。在 denoiser mode 下，模型类似于编码器对canvas进行去噪；在 encoder mode 下，模型类似于解码器。
+
+由于 DiffusionGemma 和 Gemma 4 有相同的transformer 架构，因此**保留了自回归生成的能力**，可以使用因果注意力进行标准的AR生成，性能得分落在 文本扩散模式 和 baseline Gemma 4 checkpoint 之间。
 
 **Denoiser Mode: Act like an Encoder**
 
@@ -62,25 +65,46 @@ DiffusionGemma 基于 Gemma 4 26B A4B 训练，但由于 Gemma 4 是一个 decod
 
 **Encoder Mode: Act like a Decoder**
 
-以 noisy canvas 作为输入，并使用双向注意力，可以用Gemma 4B 作为 denoiser 迭代更新 canvas，但是如何填充 canvas 需要 Encoder Mode 提供指导。
+以 noisy canvas 作为输入，并使用双向注意力，可以用Gemma 4B 作为 denoiser 迭代更新 canvas，但是如何填充 canvas 需要 Encoder Mode 处理输入query，为后续denoising提供条件信息。
 
-
-
-
-
-
-
-### Block-Autoregressive Diffusion
-
-
-
+DiffusionGemma 复用 Gemma 4 作为 Encoder，保持原本的 causal attention。由于这里的目的不是预测下一个token，因此不会使用最后的 LM Head，复用模型的 KV Cache 作为 Encoder 输出，即 DiffusionGEmma 在 Encoder Mode 和 Denoiser Mode 下共享 KV-Cache。**Encoder KV** 相当于整个 diffusion trajectory 中固定的条件信息，在一个 canvas 的多次 denoising steps 中保持不变并反复复用。
 
 ### Self-Conditioning
 
+DiffusionGemma 的生成过程是：canvas 1 -> canvas 2 -> ... -> final output，如果每一步只能看到当前的noisy canvas，模型的预测能力受限。如果能知道模型在前一步所做的预测，这样能在上一轮判断的基础上进行refine。具体实现的方式是 **Self-Conditioning**: 将 Softmax 之后的 logits 乘以所有token 的 embedding matrix，再过一个小型的 FFNN，并在下一个 denoising step 加到 canvas 的 token embedding 上。
 
+结合 Self-Conditioning，我们得到完整的 DiffusionGemma 架构：
+
+![Figure 4]({{ "/images/blog/DG-report/image4.png" | relative_url }})
+
+*Figure 4. DiffusionGemma 完整架构*
+
+### Block-Autoregressive Diffusion
+
+此前的讨论都是生成长度为 256 token 的定长序列，针对长文本生成情形，DiffusionGemma 采用 **Block-Autoregressive Diffusion**。实现思路也并不复杂，在原来的单个canvas的基础上，当我们完成一个canvas的去噪过程后，将这 256 个 token 添加到 Encoder 的输入序列中以扩展 KV-Cache，然后 Denoiser 继续产生下一个 256-token canvas，直至生成 EOS token。
+
+由于 Encoder 的 KV-Cache 是通过 causal attention 计算的，每个token只要处理之前的部分，只需要计算每次 AR step 增加的 KV-Cache，不需要重新计算之前的。
+
+### Scheduler
+
+在 DiffusionGemma 中， Scheduler 的作用是控制去噪过程，但是不会直接决定拒绝或者接受哪些token（这个由 Sampler 决定）。具体如何“调度” 去噪过程，由以下三个组件确定：
+- **step count**: 决定最大去噪步数，默认设定为 48 steps。步数越多以为着输出质量越高，但是生成速度较慢；
+- **logits scheduler**: 将 logits 除以 温度值(temperature) 控制采样的随机性， temperature 与去噪步数呈线性关系且步数越多temperature越低。在生成早期阶段，temperature 较高，模型会更多地探索，而非最有可能的token；在生成后期阶段，temperature 较低，模型更多关注最可能出现的token，让输出内容更合理。
+- **adaptive stopping**: 模型可能在最大去噪步数之前就收敛，因此在每一步都会检查 **Stability**（最近N步最高概率token预测是否相同） 和 **Confidence**（对canvas中所有token的平均置信度）。DiffusionGemma 的默认配置中，置信度阈值为0.005，稳定性阈值为1。若达到阈值无论剩余多少步都会停止去噪过程。通过 adaptive stopping，虽然默认配置下 max_denoising_steps 为 48，在一些常用bench上测试平均只需 12 steps 左右就能收敛。
 
 ### The Entropy Bounded Sampler
 
+DiffusionGemma 默认和推荐使用的 Sampler 是 **Entropy Bounded Sampler**，其主要作用如下：
+- **Initialization**：初始化为随机token(均匀分布)，和图像扩散从纯噪声开始类似；
+- **Token Acceptance**：用 Entropy 衡量 canvas 中每个token的置信度。Sampler 计算 canvas 中每个位置的 entropy 并从低到高排序，根据图5的公式，逐一检查是否接受。
+- **Token Renoise**: 被拒绝的token会被重新采样为随机token，进入下一轮去噪。
+
+
+![DiffusionGemma architecture]({{ "/images/blog/DG-report/image5.png" | relative_url }})
+
+*Figure 5. Entropy Bounded Sampler 的token接受标准*
+
+DiffusionGemma 也并非严格绑定 Entropy Bounded Sampler，也可以尝试其他的Sampler。
 
 
 ## 两阶段训练：SFT + Sampler Distillation & RL

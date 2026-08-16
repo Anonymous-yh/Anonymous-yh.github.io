@@ -62,8 +62,3 @@ permalink: /blogs/
     <p>No posts yet. The first notes are on their way.</p>
   </div>
 {% endif %}
-
-<div class="blog-writing-guide" markdown="0">
-  <strong>Writing a post</strong>
-  <p>In a file under <code>_posts/</code>, set a category such as <code>categories: [paper-reading]</code>, <code>categories: [course-notes]</code>, <code>categories: [engineering]</code>, or <code>categories: [personal]</code>.</p>
-</div>
