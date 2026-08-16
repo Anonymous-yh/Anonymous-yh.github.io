@@ -298,9 +298,98 @@
     });
   }
 
+  var articleContent = document.querySelector('.blog-article__content');
+
+  // ----- Tag archive navigation -----
+
+  var tagSections = document.querySelectorAll('[data-tag-section]');
+  var tagPageTitle = document.querySelector('[data-tag-page-title]');
+  var tagPageIntro = document.querySelector('[data-tag-page-intro]');
+  var tagPageReset = document.querySelector('[data-tag-page-reset]');
+
+  if (tagSections.length > 0) {
+    var updateTagArchive = function () {
+      var slug = decodeURIComponent(window.location.hash.replace(/^#/, '')).toLowerCase();
+      var hasMatch = false;
+
+      tagSections.forEach(function (section) {
+        var isMatch = slug && section.getAttribute('data-tag-section') === slug;
+        section.hidden = Boolean(slug) && !isMatch;
+        if (isMatch) hasMatch = true;
+      });
+
+      if (slug && hasMatch) {
+        var label = slug.replace(/-/g, ' ');
+        if (tagPageTitle) tagPageTitle.textContent = 'Tag: ' + label;
+        if (tagPageIntro) tagPageIntro.textContent = 'Posts tagged with #' + slug + '.';
+        if (tagPageReset) tagPageReset.hidden = false;
+      } else {
+        tagSections.forEach(function (section) { section.hidden = false; });
+        if (tagPageTitle) tagPageTitle.textContent = 'Tags';
+        if (tagPageIntro) tagPageIntro.textContent = 'Browse research notes, course notes, and implementation details by topic.';
+        if (tagPageReset) tagPageReset.hidden = true;
+      }
+    };
+
+    updateTagArchive();
+    window.addEventListener('hashchange', updateTagArchive);
+  }
+
+  // ----- Blog images: lightbox and Markdown figure captions -----
+
+  if (articleContent) {
+    var articleImages = articleContent.querySelectorAll('img');
+
+    if (articleImages.length > 0) {
+      var lightbox = document.createElement('div');
+      lightbox.className = 'blog-image-lightbox';
+      lightbox.hidden = true;
+      lightbox.setAttribute('role', 'dialog');
+      lightbox.setAttribute('aria-modal', 'true');
+      lightbox.setAttribute('aria-label', 'Expanded image');
+      lightbox.innerHTML = '<button class="blog-image-lightbox__close" type="button" aria-label="Close expanded image">×</button><img class="blog-image-lightbox__image" alt="">';
+      document.body.appendChild(lightbox);
+
+      var lightboxImage = lightbox.querySelector('.blog-image-lightbox__image');
+      var closeLightbox = function () { lightbox.hidden = true; };
+      lightbox.querySelector('.blog-image-lightbox__close').addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', function (event) {
+        if (event.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+      });
+
+      articleImages.forEach(function (image) {
+        image.dataset.lightboxReady = 'true';
+        image.setAttribute('tabindex', '0');
+        image.setAttribute('role', 'button');
+        image.setAttribute('aria-label', 'Open image: ' + (image.alt || 'image'));
+
+        var openLightbox = function () {
+          lightboxImage.src = image.currentSrc || image.src;
+          lightboxImage.alt = image.alt || '';
+          lightbox.hidden = false;
+        };
+        image.addEventListener('click', openLightbox);
+        image.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openLightbox();
+          }
+        });
+
+        var imageParagraph = image.parentElement;
+        var caption = imageParagraph && imageParagraph.tagName === 'P' ? imageParagraph.nextElementSibling : null;
+        if (caption && caption.tagName === 'P' && /^Figure\s+\d+[.:]/i.test(caption.textContent.trim())) {
+          caption.classList.add('blog-figure-caption');
+        }
+      });
+    }
+  }
+
   // ----- Blog Table of Contents -----
 
-  var articleContent = document.querySelector('.blog-article__content');
   var toc = document.querySelector('[data-blog-toc]');
 
   if (articleContent && toc) {

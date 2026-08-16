@@ -2,18 +2,20 @@
 layout: post
 title: "Reading Notes: DiffusionGemma Technical Report"
 date: 2026-08-13
+last_updated: 2026-08-13
 categories: [paper-reading]
 tags: [diffusion-llm, paper-reading]
 description: "Notes and questions from reading the DiffusionGemma technical report."
+paper:
+  title: "DiffusionGemma Technical Report"
+  organization: "Google DeepMind"
+  venue: "Technical Report · 2026"
+  note: "DiffusionGemma-26B-A4B-it · Gemma 4 26B A4B"
+  topics: ["Diffusion LM", "Block-Autoregressive", "Multimodal"]
+  links:
+    - label: "arXiv"
+      url: "https://arxiv.org/abs/2608.00146"
 ---
-
-> **Paper:** *DiffusionGemma Technical Report*  
-> **Organization:** Google DeepMind  
-> **Model:** DiffusionGemma-26B-A4B-it  
-> **Base Model:** Gemma 4 26B A4B  
-> **Paradigm:** Discrete Diffusion Language Model / Block-Autoregressive Diffusion  
-> **Release:** 2026  
-> **link:** [DiffusionGemma Technical Report](https://arxiv.org/abs/2608.00146)
 
 DiffusionGemma 是 Google DeepMind 发布的开放权重离散扩散语言模型。它是直接从 Gemma 4 26B A4B 的 post-trained checkpoint 出发，通过两阶段训练将一个 autoregressive model 转换成能够进行 bidirectional denoising 的 text diffusion model。论文报告其总参数量约 25.2B，每次实际激活约 3.85B 参数，并使用长度为 256 tokens 的 diffusion canvas。
 

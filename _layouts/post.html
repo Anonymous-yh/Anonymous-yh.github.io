@@ -4,7 +4,6 @@ layout: default
 
 {% assign primary_category = page.categories | first | default: "personal" %}
 {% assign category_info = site.data.blog_categories | where: "slug", primary_category | first %}
-{% assign reading_time = page.content | number_of_words | divided_by: 220 | plus: 1 %}
 
 <div class="blog-article-shell">
   <aside class="blog-toc" data-blog-toc hidden aria-label="Table of contents">
@@ -15,20 +14,25 @@ layout: default
 <article class="blog-article" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="blog-article__header">
     <p class="blog-article__meta">
-      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>
+      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">Published {{ page.date | date: "%b %-d, %Y" }}</time>
+      {% assign updated_at = page.last_updated | default: page.date %}
+      <span aria-hidden="true">·</span>
+      <time datetime="{{ updated_at | date_to_xmlschema }}" itemprop="dateModified">Updated {{ updated_at | date: "%b %-d, %Y" }}</time>
       <span aria-hidden="true">·</span>
       <span class="blog-post__category">{% if category_info %}{{ category_info.icon }} {{ category_info.title }}{% else %}{{ primary_category | replace: '-', ' ' }}{% endif %}</span>
       <span aria-hidden="true">·</span>
-      <span>{{ reading_time }} min read</span>
+      <span>{% include blog-reading-time.html post=page %} min read</span>
     </p>
     <h1 itemprop="name headline">{{ page.title | escape }}</h1>
     {% if page.description %}<p class="blog-article__description">{{ page.description }}</p>{% endif %}
     {% if page.tags and page.tags.size > 0 %}
       <div class="blog-post__tags" aria-label="Post tags">
-        {% for tag in page.tags %}<span>#{{ tag }}</span>{% endfor %}
+        {% for tag in page.tags %}{% assign tag_slug = tag | slugify %}<a class="blog-post__tag" href="{{ '/tags/#' | append: tag_slug | relative_url }}">#{{ tag }}</a>{% endfor %}
       </div>
     {% endif %}
   </header>
+
+  {% if page.paper %}{% include paper-record.html paper=page.paper %}{% endif %}
 
   <div class="blog-article__content" itemprop="articleBody">
     {{ content }}

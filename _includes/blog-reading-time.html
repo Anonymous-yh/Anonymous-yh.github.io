@@ -1,0 +1,3 @@
+{%- assign blog_words = include.post.content | strip_html | strip_newlines | number_of_words -%}
+{%- assign blog_minutes = blog_words | divided_by: 220 | plus: 1 -%}
+{{- blog_minutes -}}

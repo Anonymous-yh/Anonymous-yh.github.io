@@ -1,17 +1,49 @@
 ---
-layout: archive
+title: "Tags"
+layout: gridlay
+sitemap: false
 permalink: /tags/
-title: "Posts by Tags"
-author_profile: true
 ---
 
-{% include base_path %}
-{% include group-by-array collection=site.posts field="tags" %}
+<div class="tag-page-header" markdown="0">
+  <p class="blog-article__meta">Knowledge navigation</p>
+  <h1 data-tag-page-title>Tags</h1>
+  <p class="blog-intro" data-tag-page-intro>Browse research notes, course notes, and implementation details by topic.</p>
+  <p class="tag-page-reset" data-tag-page-reset hidden><a href="{{ '/tags/' | relative_url }}">Show all tags</a></p>
+</div>
 
-{% for tag in group_names %}
-  {% assign posts = group_items[forloop.index0] %}
-  <h2 id="{{ tag | slugify }}" class="archive__subtitle">{{ tag }}</h2>
-  {% for post in posts %}
-    {% include archive-single.html %}
+<nav class="tag-index" aria-label="Tag index" markdown="0">
+  {% assign sorted_tags = site.tags | sort %}
+  {% for tag_pair in sorted_tags %}
+    {% assign tag_name = tag_pair[0] %}
+    {% assign tag_posts = tag_pair[1] %}
+    <a href="#{{ tag_name | slugify }}">#{{ tag_name }} <span>{{ tag_posts | size }}</span></a>
   {% endfor %}
+</nav>
+
+{% for tag_pair in sorted_tags %}
+  {% assign tag_name = tag_pair[0] %}
+  {% assign tag_posts = tag_pair[1] %}
+  <section class="blog-tag-section" id="{{ tag_name | slugify }}" data-tag-section="{{ tag_name | slugify }}" markdown="0">
+    <h2>Tag: {{ tag_name | replace: '-', ' ' }}</h2>
+    <p class="blog-article__meta">{{ tag_posts | size }} post{% if tag_posts.size != 1 %}s{% endif %}</p>
+    <div class="blog-post-list">
+      {% for post in tag_posts %}
+        {% assign primary_category = post.categories | first | default: "personal" %}
+        {% assign category_info = site.data.blog_categories | where: "slug", primary_category | first %}
+        {% assign updated_at = post.last_updated | default: post.date %}
+        <article class="blog-post">
+          <div class="blog-post__meta">
+            <time datetime="{{ post.date | date_to_xmlschema }}">Published {{ post.date | date: "%b %-d, %Y" }}</time>
+            <span aria-hidden="true">·</span>
+            <time datetime="{{ updated_at | date_to_xmlschema }}">Updated {{ updated_at | date: "%b %-d, %Y" }}</time>
+            <span aria-hidden="true">·</span>
+            <span class="blog-post__category">{% if category_info %}{{ category_info.title }}{% else %}{{ primary_category | replace: '-', ' ' }}{% endif %}</span>
+          </div>
+          <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+          {% if post.description and post.description != "" %}<p class="blog-post__excerpt">{{ post.description | strip_html | strip_newlines | truncate: 210 }}</p>{% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </section>
 {% endfor %}

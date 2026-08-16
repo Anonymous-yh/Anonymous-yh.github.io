@@ -2,18 +2,19 @@
 layout: post
 title: "Reading Notes: Multi-Mask Diffusion Language Model"
 date: 2026-08-15
+last_updated: 2026-08-15
 categories: [paper-reading]
 tags: [diffusion-llm, paper-reading]
-description: ""
+description: "Reading notes on Multi-Mask Diffusion Language Models for few-step generation and consistency distillation."
+paper:
+  title: "Multi-Mask Diffusion Language Models for Few-Step Generation"
+  organization: "ByteDance Seed"
+  venue: "COLM 2026"
+  topics: ["Diffusion LM", "Few-Step", "Distillation"]
+  links:
+    - label: "arXiv"
+      url: "https://arxiv.org/abs/2607.19686"
 ---
-
-
-> **Paper:** *Multi-Mask Diffusion Language Models for Few-Step Generation*  
-> **Organization:** ByteDance Seed  
-> **Paradigm:** Masked Diffusion Language Model  
-> **Focus:** Few-Step Generation / Consistency Distillation  
-> **Release:** 2026  
-> **link:** [Multi-Mask Diffusion Language Models for Few-Step Generation](https://www.alphaxiv.org/zh/abs/2607.19686) 
 
 ## Introduction
 
@@ -195,4 +196,3 @@ MultiMDM 的实验主要为了回答三个问题：
 1. 关于 Desginate mask 的选择，论文用了简单的 tokendizer ID 取模的方式，是否有更好的选择策略？
 2. 核心的实验规模比较小，主实验只有 170M DiT，在 LM1B 和 OpenWebText 上做 unconditional generation，还不能说明是否高质量语言生成的能力？
 3. 8B scaling 实验：MultiLLaDA 相比 baseline，用 DCLM + OpenCode 数据多训练了 5000 steps，和原始LLaDA 比较是否公平？
-

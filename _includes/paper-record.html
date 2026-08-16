@@ -1,0 +1,22 @@
+{% assign paper = include.paper %}
+{% assign primary_link = paper.links | first %}
+<section class="paper-record" aria-labelledby="paper-record-title">
+  <p class="paper-record__eyebrow">Paper</p>
+  <h2 class="paper-record__title" id="paper-record-title">
+    {% if primary_link %}<a href="{{ primary_link.url }}" target="_blank" rel="noopener noreferrer">{{ paper.title }}</a>{% else %}{{ paper.title }}{% endif %}
+  </h2>
+  {% if paper.organization or paper.venue %}
+    <p class="paper-record__meta">{% if paper.organization %}{{ paper.organization }}{% endif %}{% if paper.organization and paper.venue %}<span aria-hidden="true">·</span>{% endif %}{% if paper.venue %}{{ paper.venue }}{% endif %}</p>
+  {% endif %}
+  {% if paper.note %}<p class="paper-record__note">{{ paper.note }}</p>{% endif %}
+  {% if paper.topics and paper.topics.size > 0 %}
+    <div class="paper-record__topics" aria-label="Paper topics">
+      {% for topic in paper.topics %}<span>{{ topic }}</span>{% endfor %}
+    </div>
+  {% endif %}
+  {% if paper.links and paper.links.size > 0 %}
+    <div class="paper-record__actions" aria-label="Paper links">
+      {% for link in paper.links %}<a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.label }} <span aria-hidden="true">↗</span></a>{% endfor %}
+    </div>
+  {% endif %}
+</section>
