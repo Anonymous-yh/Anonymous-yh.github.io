@@ -9,9 +9,9 @@ permalink: /
 <p class="home-hero-sub">{{ site.title }}, {{ site.institution }}</p>
 
 <div class="chip-container" markdown="0">
-  <a href="{{ site.url }}{{ site.baseurl }}/research/" class="chip">Multimodal LLMs</a>
-  <a href="{{ site.url }}{{ site.baseurl }}/research/" class="chip">Diffusion LLMs</a>
-  <a href="{{ site.url }}{{ site.baseurl }}/research/" class="chip">Multimodal Generation &amp; Understanding</a>
+  <span class="chip">Multimodal LLMs</span>
+  <span class="chip">Diffusion LLMs</span>
+  <span class="chip">Multimodal Generation &amp; Understanding</span>
 </div>
 
 I explore how foundation models understand, generate, reason, and interact with the world.
@@ -31,5 +31,3 @@ My research interests lie broadly in foundation models, with a particular focus 
 - Multimodal Generation and Understanding
 - LLM / Multimodal Agents
 - Efficient Training and Inference
-
-<p><a href="{{ site.url }}{{ site.baseurl }}/research/">Explore research interests &rarr;</a></p>
